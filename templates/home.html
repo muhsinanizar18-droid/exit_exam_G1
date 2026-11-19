@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Project Overview | Shopping Mode Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<main class="app-shell home-shell">
+    <nav class="nav" aria-label="Main navigation">
+        <a class="active" href="{{ url_for('home') }}">Overview</a>
+        <a href="{{ url_for('predict') }}">Predictor</a>
+    </nav>
+
+    <header class="overview-header">
+        <div>
+            <p class="eyebrow">Machine learning project</p>
+            <h1>Shopping Mode Prediction</h1>
+        </div>
+        <a class="primary-link" href="{{ url_for('predict') }}">Open predictor</a>
+    </header>
+
+    <section class="overview-grid">
+        <article class="overview-card overview-main">
+            <p class="card-label">Project overview</p>
+            <h2>Predict how a customer prefers to shop.</h2>
+            <p>This application uses customer profile, spending, payment, satisfaction, and influence data to predict whether a customer prefers online shopping, offline shopping, or either shopping mode.</p>
+        </article>
+
+        <article class="overview-card">
+            <p class="card-label">Problem type</p>
+            <h2>Multiclass classification</h2>
+            <p>Three target categories:</p>
+            <ul>
+                <li>Online</li>
+                <li>Offline</li>
+                <li>Equal / both</li>
+            </ul>
+        </article>
+
+        <article class="overview-card">
+            <p class="card-label">Model inputs</p>
+            <h2>27 customer attributes</h2>
+            <p>Profile, behavioral, financial, and satisfaction variables are collected before prediction.</p>
+        </article>
+
+        <article class="overview-card">
+            <p class="card-label">Workflow</p>
+            <h2>End-to-end prediction</h2>
+            <ol>
+                <li>Collect customer responses</li>
+                <li>Apply trained preprocessing</li>
+                <li>Run the selected model</li>
+                <li>Display the predicted mode and probabilities</li>
+            </ol>
+        </article>
+    </section>
+
+    <section class="objective-band">
+        <div>
+            <p class="card-label">Project objective</p>
+            <h2>Turn customer behavior patterns into an understandable shopping preference prediction.</h2>
+        </div>
+        <a class="secondary-link" href="{{ url_for('predict') }}">Start prediction</a>
+    </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Shopping Mode Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<main class="app-shell">
+    <nav class="nav" aria-label="Main navigation">
+        <a href="{{ url_for('home') }}">Overview</a>
+        <a class="active" href="{{ url_for('predict') }}">Predictor</a>
+    </nav>
+
+    <header class="header">
+        <div>
+            <p class="eyebrow">Customer behavior model</p>
+            <h1>Shopping Mode Predictor</h1>
+        </div>
+        <span class="status">Model ready</span>
+    </header>
+
+    {% if error %}<div class="alert alert-error">{{ error }}</div>{% endif %}
+
+    {% if prediction %}
+    <section class="result">
+        <p>Predicted shopping mode</p>
+        <h2>{{ prediction }}</h2>
+        {% if probabilities %}
+        <div class="probabilities">
+            {% for name, score in probabilities %}
+            <div class="probability-row"><span>{{ name }}</span><strong>{{ '%.1f'|format(score * 100) }}%</strong></div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </section>
+    {% endif %}
+
+    <form method="post">
+        <section class="form-section">
+            <h2>Customer profile</h2>
+            <div class="grid">
+                <label>Age<input type="number" name="Age" min="10" max="100" required value="{{ request.form.get('Age', '') }}"></label>
+                {% for field in ['Gender','Occupation_Status','Country_Region','Monthly_Income_Range','Primary_Device','Top_Spending_Category'] %}
+                <label>{{ field.replace('_', ' ') }}
+                    <select name="{{ field }}" required>
+                        <option value="">Select...</option>
+                        {% for option in options[field] %}<option value="{{ option }}" {% if request.form.get(field)==option %}selected{% endif %}>{{ option }}</option>{% endfor %}
+                    </select>
+                </label>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="form-section">
+            <h2>Shopping behavior</h2>
+            <div class="grid">
+                {% for field in ['Shop_Most_Where','Online_Shopping_Frequency','Preferred_Platform','Avg_Monthly_Spend_NonEssentials','Preferred_Payment_Method','Uses_BNPL_Installments','Makes_Shopping_List','Return_Frequency','Follows_Brands_On_Social'] %}
+                <label>{{ field.replace('_', ' ') }}
+                    <select name="{{ field }}" required>
+                        <option value="">Select...</option>
+                        {% for option in options[field] %}<option value="{{ option }}" {% if request.form.get(field)==option %}selected{% endif %}>{{ option }}</option>{% endfor %}
+                    </select>
+                </label>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="form-section">
+            <h2>Influence and satisfaction scores</h2>
+            <div class="grid">
+                {% for field in ['Review_Influence_Score','Social_Ads_Influence_Score','Price_Comparison_Frequency','Discount_Importance_Score','Likely_To_Buy_After_Ad_Score','Impulse_Purchase_Frequency','Online_Shopping_Satisfaction_Score','Trust_In_Online_Reviews_Score','Regret_After_Purchase_Frequency'] %}
+                <label>{{ field.replace('_', ' ') }}<input type="number" name="{{ field }}" min="1" max="10" required value="{{ request.form.get(field, '') }}"></label>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="form-section">
+            <h2>Shopping preferences</h2>
+            <div class="grid">
+                {% for field in ['Reason_Prefer_Online','Reason_Prefer_InStore'] %}
+                <label>{{ field.replace('_', ' ') }}
+                    <select name="{{ field }}" required>
+                        <option value="">Select...</option>
+                        {% for option in options[field] %}<option value="{{ option }}" {% if request.form.get(field)==option %}selected{% endif %}>{{ option }}</option>{% endfor %}
+                    </select>
+                </label>
+                {% endfor %}
+            </div>
+        </section>
+
+        <button type="submit">Predict shopping mode</button>
+    </form>
+</main>
+</body>
+</html>
